@@ -1,0 +1,19 @@
+name: cicd-deployment
+run-name: ${{ github.actor }} is learning GitHub Actions
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g bats
+      - run: bats -v
+      - run: npm run test

@@ -34,7 +34,7 @@ export const createPostValidator = [
     body("userId").isInt().notEmpty().withMessage("User ID must be an integer and not empty"),
 ]
 
-/*
+/**
 * @openapi
 * components:
 *  schemas:

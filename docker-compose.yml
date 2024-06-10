@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3311:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - app-network
+  backend:
+    image: node:21
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      - db
+    restart: always
+    working_dir: /app
+    command: npm run dev
+    environment:
+      DATABASE_URL: mysql://user:password@db/db
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

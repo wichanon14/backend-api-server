@@ -4,6 +4,7 @@
 ![Lines](./badges/coverage-lines.svg)
 ![Statements](./badges/coverage-statements.svg)
 ![Jest coverage](./badges/coverage-jest%20coverage.svg)
+-----
 This project is a backend API designed to demonstrate my skills and capabilities in building robust, scalable, and maintainable server-side applications. This API is developed using Node.js with TypeScript, leveraging modern development practices and tools. The API is containerized using Docker and managed with docker-compose to ensure a consistent and isolated environment for development, testing, and deployment.
 
 ## Features

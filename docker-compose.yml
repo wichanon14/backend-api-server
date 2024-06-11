@@ -15,10 +15,7 @@ services:
     networks:
       - app-network
   backend:
-    image: node:21
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: wichanon17978/backend-api-service:latest
     container_name: backend
     depends_on:
       - db
@@ -27,8 +24,6 @@ services:
     command: npm run dev
     environment:
       DATABASE_URL: mysql://user:password@db/db
-    volumes:
-      - .:/app
     ports:
       - "3000:3000"
     networks:

@@ -22,6 +22,8 @@ services:
     restart: always
     working_dir: /app
     command: npm run dev
+    volumes:
+      - .:/app
     environment:
       DATABASE_URL: mysql://user:password@db/db
     ports:

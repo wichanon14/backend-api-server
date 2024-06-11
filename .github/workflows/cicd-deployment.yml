@@ -53,6 +53,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /home/githubbot/backend-api-service
+            pwd
+            cd /home/githubbot/backend-api-server
             docker-compose down
             docker-compose up -d

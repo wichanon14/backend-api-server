@@ -25,8 +25,12 @@ services:
     volumes:
       - .:/app
     environment:
-      DATABASE_URL: mysql://user:password@db/db
       PORT: 3000
+      DATABASE_URL: mysql://user:password@db/db
+      OIDC_ISSUER: ${OIDC_ISSUER}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+      OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI}
+      OIDC_POST_LOGOUT_REDIRECT_URI: ${OIDC_POST_LOGOUT_REDIRECT_URI}
     ports:
       - "3000:3000"
     networks:

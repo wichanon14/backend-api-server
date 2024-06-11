@@ -14,7 +14,7 @@ module.exports = {
     },
     collectCoverageFrom: ["./src/**", "!./src/data/**/**.ts", "!./src/libs/yaml.ts","!./src/types/**.d.ts"],
     "collectCoverage": true,
-    "coverageReporters": ["html", "text","json","lcov"],
+    "coverageReporters": ["html", "text","json-summary"],
     "coverageDirectory": "coverage"
   };
   

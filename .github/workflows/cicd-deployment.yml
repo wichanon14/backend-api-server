@@ -1,5 +1,5 @@
 name: cicd-deployment
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} - ${{ github.event_name }} - ${{ github.repository }}
 on:
   push:
     branches:
@@ -36,5 +36,5 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }} # GitHub Personal Access Token
         run: |
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
           git push origin main

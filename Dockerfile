@@ -9,6 +9,12 @@ COPY package*.json .
 
 # install dependencies
 RUN npm install
+# install nodemon
+RUN npm install -g nodemon
+# install typescript
+RUN npm install -g typescript
+# install for tsc 
+RUN npm install -g ts-node
 
 COPY . .
 

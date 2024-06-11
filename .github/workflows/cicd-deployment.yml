@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '21'
-      - run: npm install -g bats
-      - run: bats -v
-      - run: npm install 
-      - run: npm run coverage
+      - name: Setup Project
+        run: npm install 
+      - name: Coverage Testing
+        run: npm run coverage

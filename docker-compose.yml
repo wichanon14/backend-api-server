@@ -26,6 +26,7 @@ services:
       - .:/app
     environment:
       DATABASE_URL: mysql://user:password@db/db
+      PORT: 3000
     ports:
       - "3000:3000"
     networks:

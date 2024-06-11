@@ -18,6 +18,8 @@ jobs:
         run: npm install 
       - name: Coverage Testing
         run: npm run coverage
+      - name: Directory checking
+        run: pwd
       - name: Generating coverage badges
         uses: jpb06/jest-badges-action@latest
         with:

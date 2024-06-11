@@ -3,7 +3,6 @@ import { getClientConfig } from '../../config/oidc.config';
 import { generators } from 'openid-client';
 import jsonwebtoken, { Jwt, JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { logger } from '../../libs/pino';
 import { AppError, HttpStatus} from '../../libs/error';
 dotenv.config();
 

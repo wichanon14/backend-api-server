@@ -1,6 +1,9 @@
 import { HttpStatus } from '../libs/error'
 import { server } from '../server'
 import request from 'supertest'
+import jsonwebtoken from 'jsonwebtoken'
+import * as oidcClient from '../config/oidc.config'
+import { BaseClient, TokenSet } from 'openid-client'
 
 jest.mock('openid-client', () => {
     return {
@@ -32,7 +35,8 @@ jest.mock('../config/oidc.config', () => {
                 metadata:{
                     end_session_endpoint: 'http://localhost:3000'
                 }
-            }
+            },
+            Client: jest.fn()
         })
     }
 })
@@ -93,14 +97,14 @@ describe('OIDC Route', () => {
 
         describe('should return 400', () => {
             it('when id_token is invalid and undecodable', async () => {
-                jest.spyOn(require('jsonwebtoken'), 'decode').mockReturnValueOnce(null)
+                jest.spyOn(jsonwebtoken, 'decode').mockReturnValueOnce(null)
                 const response = await request(server)
                     .post('/callback')
                     .send({ id_token: 'invalid_id_token' })
                 expect(response.status).toBe(HttpStatus.BAD_REQUEST)
             })
             it('when id_token is invalid and missing nonce', async () => {
-                jest.spyOn(require('jsonwebtoken'), 'decode').mockReturnValueOnce({
+                jest.spyOn(jsonwebtoken, 'decode').mockReturnValueOnce({
                     payload: {}
                 })
                 const response = await request(server)
@@ -112,8 +116,10 @@ describe('OIDC Route', () => {
 
         describe('should return 500', () => {
             it('when clinet callback failed', async () => {
-                const client = await require('../config/oidc.config').getClientConfig()
-                jest.spyOn(client, 'callback').mockResolvedValueOnce(null)
+                const client = await oidcClient.getClientConfig()
+                // only mock TokenSet type to be null for this case to test the error handling
+                const tokenSet = null as unknown as TokenSet;  
+                jest.spyOn(client, 'callback').mockResolvedValueOnce(tokenSet);
                 const response = await request(server)
                     .post('/callback')
                     .send({ id_token: 'id_token' })
@@ -129,14 +135,15 @@ describe('OIDC Route', () => {
         })
 
         it('should return 302', async () => {
-            const client = require('../config/oidc.config')
+            const client = oidcClient
             jest.spyOn(client, 'getClientConfig').mockResolvedValueOnce({
                 issuer:{
-                    metadata:{
-                        end_session_endpoint: null
+                    metadata: {
+                        end_session_endpoint: undefined,
+                        issuer: 'http://localhost:3000'
                     }
                 }
-            })
+            } as BaseClient)
             const response = await request(server).get('/logout')
             expect(response.status).toBe(HttpStatus.REDIRECT)
         })

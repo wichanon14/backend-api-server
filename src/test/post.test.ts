@@ -2,6 +2,7 @@ import { AppError, HttpStatus } from '../libs/error';
 import { server } from '../server';
 import request from 'supertest';
 import { Post } from '@prisma/client';
+import * as prismaMock from '../libs/prisma';
 
 jest.mock('../libs/validateToken', () => {
     return {
@@ -91,13 +92,13 @@ describe('Post Route', () => {
     describe('GET /posts route', () => {
         it('should return 200 status code', async () => {
 
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findMany').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findMany').mockResolvedValue([resultSuccessful]);
 
             const response = await request(server)
                 .get('/posts?userId=1&title=Post 1&body=Body1')
                 .set('Authorization', `Bearer asdfsaadfasdfasdfasdf`);
             expect(response.status).toBe(HttpStatus.OK);
-            expect(response.body).toEqual(resultSuccessful);
+            expect(response.body).toEqual([resultSuccessful]);
         });
 
         describe('should return 400 status code', () => {
@@ -119,7 +120,7 @@ describe('Post Route', () => {
         describe('should return 500 status code', () => {
             it('prisma query err ', async () => {
 
-                jest.spyOn(require('../libs/prisma').prisma.post, 'findMany').mockRejectedValueOnce(
+                jest.spyOn(prismaMock.prisma.post, 'findMany').mockRejectedValueOnce(
                     new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
                 )
 
@@ -135,7 +136,7 @@ describe('Post Route', () => {
     describe('GET /posts/{id} route', () => {
         it('should return 200 status code', async () => {
 
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
 
             const response = await request(server)
                 .get('/posts/1')
@@ -146,7 +147,7 @@ describe('Post Route', () => {
 
         it('should return 404 status code', async () => {
 
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(null);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(null);
 
             const response = await request(server)
                 .get('/posts/1')
@@ -172,7 +173,7 @@ describe('Post Route', () => {
 
         it('should return 500 status code', async () => {
 
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockRejectedValueOnce(
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockRejectedValueOnce(
                 new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
             )
 
@@ -188,7 +189,7 @@ describe('Post Route', () => {
         it('should return 201 status code', async () => {
             
 
-            jest.spyOn(require('../libs/prisma').prisma.post, 'create').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'create').mockResolvedValue(resultSuccessful);
 
             const response = await request(server)
                 .post('/posts')
@@ -212,7 +213,7 @@ describe('Post Route', () => {
 
         it('should return 500 status code', async () => {
 
-            jest.spyOn(require('../libs/prisma').prisma.post, 'create').mockRejectedValueOnce(
+            jest.spyOn(prismaMock.prisma.post, 'create').mockRejectedValueOnce(
                 new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
             )
 
@@ -228,8 +229,8 @@ describe('Post Route', () => {
 
     describe('PUT /posts/{id} route', () => {
         it('should return 200 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
-            jest.spyOn(require('../libs/prisma').prisma.post, 'update').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'update').mockResolvedValue(resultSuccessful);
 
             const response = await request(server)
                 .put('/posts/1')
@@ -250,7 +251,7 @@ describe('Post Route', () => {
         })
 
         it('should return 404 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(null);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(null);
 
             const response = await request(server)
                 .put('/posts/1')
@@ -261,7 +262,7 @@ describe('Post Route', () => {
         })
 
         it('should return 500 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockRejectedValueOnce(
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockRejectedValueOnce(
                 new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
             )
 
@@ -276,8 +277,8 @@ describe('Post Route', () => {
 
     describe('PATCH /posts/{id} route', () => {
         it('should return 200 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
-            jest.spyOn(require('../libs/prisma').prisma.post, 'update').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'update').mockResolvedValue(resultSuccessful);
 
             const response = await request(server)
                 .patch('/posts/1')
@@ -298,7 +299,7 @@ describe('Post Route', () => {
         })
 
         it('should return 404 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(null);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(null);
 
             const response = await request(server)
                 .patch('/posts/1')
@@ -309,7 +310,7 @@ describe('Post Route', () => {
         })
 
         it('should return 500 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockRejectedValueOnce(
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockRejectedValueOnce(
                 new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
             )
 
@@ -324,8 +325,8 @@ describe('Post Route', () => {
 
     describe('DELETE /posts/{id} route', () => {
         it('should return 200 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
-            jest.spyOn(require('../libs/prisma').prisma.post, 'delete').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'delete').mockResolvedValue(resultSuccessful);
 
             const response = await request(server)
                 .delete('/posts/1')
@@ -335,7 +336,7 @@ describe('Post Route', () => {
         })
 
         it('should return 404 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockResolvedValue(null);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(null);
 
             const response = await request(server)
                 .delete('/posts/1')
@@ -345,7 +346,7 @@ describe('Post Route', () => {
         })
 
         it('should return 500 status code', async () => {
-            jest.spyOn(require('../libs/prisma').prisma.post, 'findUnique').mockRejectedValueOnce(
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockRejectedValueOnce(
                 new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
             )
 

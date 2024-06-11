@@ -2,6 +2,7 @@ import { HttpStatus } from '../libs/error';
 import { server } from '../server';
 import request from 'supertest';
 import jwksClient from "jwks-rsa"
+import jsonwebtoken from 'jsonwebtoken'
 
 jest.mock('openid-client', () => {
     return {
@@ -82,7 +83,7 @@ describe('Token validation middleware', () => {
             });
 
             it('when token\'s header does not contain kid', async () => {
-                jest.spyOn(require('jsonwebtoken'), 'decode').mockReturnValueOnce(null);
+                jest.spyOn(jsonwebtoken, 'decode').mockReturnValueOnce(null);
                 const response = await request(server)
                 .get('/posts/1')
                 .set('Authorization', 'Bearer XXX');
@@ -97,13 +98,17 @@ describe('Token validation middleware', () => {
             })
 
             it('when jwt verify is error', async () => {
-                jest.spyOn(require('jsonwebtoken'), 'decode').mockReturnValueOnce({
+                jest.spyOn(jsonwebtoken, 'decode').mockReturnValueOnce({
                     header: { kid: 'kid' }
                 });
-                jest.spyOn(require('jwks-rsa')(), 'getSigningKey').mockResolvedValueOnce({
+                const option ={
+                    jwksUri: ''
+                }
+                const client = jwksClient(option);
+                jest.spyOn(client, 'getSigningKey').mockImplementationOnce(()=>Promise.resolve({
                     getPublicKey: jest.fn().mockResolvedValueOnce('key')
-                })
-                jest.spyOn(require('jsonwebtoken'), 'verify').mockImplementationOnce(()=>{
+                }))
+                jest.spyOn(jsonwebtoken, 'verify').mockImplementationOnce(()=>{
                     throw new Error('jwt verify error');
                 })
                 const response = await request(server)

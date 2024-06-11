@@ -23,4 +23,18 @@ jobs:
       - name: Generating coverage badges
         uses: jpb06/jest-badges-action@latest
         with:
+          branches: main
           coverage-summary-path: ./coverage/coverage-summary.json
+      - name: Configure Git for deployment
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Commit coverage badge
+        run: |
+          git add . && git commit -m "Update coverage badges"
+      - name: Push changes
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }} # GitHub Personal Access Token
+        run: |
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git push origin main

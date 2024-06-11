@@ -58,7 +58,7 @@ app.use(postRouter);
 
 // Error Handler
 app.use((err: AppError, req: Request, res: Response, next:NextFunction) => {
-  logger.error('Error handler ',err);
+  logger.error(`Error handler ${JSON.stringify(err)}`);
   return next(res.status(err.status).json({
     status: 'error',
     msg: err.message

@@ -4,6 +4,7 @@ import { generators } from 'openid-client';
 import jsonwebtoken, { Jwt, JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { AppError, HttpStatus} from '../../libs/error';
+import { logger } from '../../libs/pino';
 dotenv.config();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,10 +49,12 @@ export const authCallbackHandler = async (req: Request, res: Response, next:Next
         // decode the id_token to get the nonce value
         const isValidIdToken = jsonwebtoken.decode(params.id_token as string) as Jwt;
         if( !isValidIdToken ){
+            logger.error('Invalid id_token');
             return next(new AppError('Invalid id_token',HttpStatus.BAD_REQUEST));
         }
-        const decodeData = isValidIdToken.payload as JwtPayload;
+        const decodeData = isValidIdToken as JwtPayload;
         if( decodeData && !decodeData.nonce ){
+            logger.error('undecoable id_token');
             return next(new AppError('Invalid id_token',HttpStatus.BAD_REQUEST));
         }
         const { nonce } = decodeData as { nonce: string };
@@ -64,6 +67,7 @@ export const authCallbackHandler = async (req: Request, res: Response, next:Next
         );
 
         if(!token){
+            logger.error('client callback unreachable');
             throw new AppError('client callback unreachable',HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -75,6 +79,7 @@ export const authCallbackHandler = async (req: Request, res: Response, next:Next
             msg: 'Login success'
         }).end();
     }catch(err){
+        logger.error(`authCallbackHandler: ${err}`);
         return next(new AppError('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR))
     }
 

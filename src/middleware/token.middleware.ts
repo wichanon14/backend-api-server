@@ -28,6 +28,7 @@ export const tokenValidationMiddleware = async (req: Request, res:Response, next
             throw new AppError('Invalid token',HttpStatus.UNAUTHORIZED)
         }
     }catch(err){
+        logger.error(`tokenValidationMiddleware: ${err}`);
         return next(new AppError('Invalid token',HttpStatus.UNAUTHORIZED))
     }
 

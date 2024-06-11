@@ -12,8 +12,9 @@ module.exports = {
         tsconfig: 'tsconfig.json',
       },
     },
-    //collectCoverageFrom: ["./src/**"],
-    //coverageReporters: ['html'],
-    //coverageDirectory: './coverage'
+    collectCoverageFrom: ["./src/**", "!./src/data/**/**.ts", "!./src/libs/yaml.ts","!./src/types/**.d.ts"],
+    "collectCoverage": true,
+    "coverageReporters": ["html", "text","json","lcov"],
+    "coverageDirectory": "coverage"
   };
   

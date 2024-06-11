@@ -28,7 +28,7 @@ jest.mock('@prisma/client', ()=>{
     }
 })
 
-const resultSuccessful : Post = {
+export const resultPostSuccessful : Post = {
     id:1,
     title:'Post 1',
     body:'Body 1',
@@ -92,13 +92,13 @@ describe('Post Route', () => {
     describe('GET /posts route', () => {
         it('should return 200 status code', async () => {
 
-            jest.spyOn(prismaMock.prisma.post, 'findMany').mockResolvedValue([resultSuccessful]);
+            jest.spyOn(prismaMock.prisma.post, 'findMany').mockResolvedValue([resultPostSuccessful]);
 
             const response = await request(server)
                 .get('/posts?userId=1&title=Post 1&body=Body1')
                 .set('Authorization', `Bearer asdfsaadfasdfasdfasdf`);
             expect(response.status).toBe(HttpStatus.OK);
-            expect(response.body).toEqual([resultSuccessful]);
+            expect(response.body).toEqual([resultPostSuccessful]);
         });
 
         describe('should return 400 status code', () => {
@@ -136,13 +136,13 @@ describe('Post Route', () => {
     describe('GET /posts/{id} route', () => {
         it('should return 200 status code', async () => {
 
-            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultPostSuccessful);
 
             const response = await request(server)
                 .get('/posts/1')
                 .set('Authorization', `Bearer asdfsaadfasdfasdfasdf`);
             expect(response.status).toBe(HttpStatus.OK);
-            expect(response.body).toEqual(resultSuccessful);
+            expect(response.body).toEqual(resultPostSuccessful);
         })
 
         it('should return 404 status code', async () => {
@@ -189,14 +189,14 @@ describe('Post Route', () => {
         it('should return 201 status code', async () => {
             
 
-            jest.spyOn(prismaMock.prisma.post, 'create').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'create').mockResolvedValue(resultPostSuccessful);
 
             const response = await request(server)
                 .post('/posts')
                 .send({userId:1,title:'Post 1',body:'Body 1'})
                 .set('Authorization', `Bearer asdfsaadfasdfasdfasdf`);
             expect(response.status).toBe(HttpStatus.CREATED);
-            expect(response.body).toEqual(resultSuccessful);
+            expect(response.body).toEqual(resultPostSuccessful);
 
         })
 
@@ -229,15 +229,15 @@ describe('Post Route', () => {
 
     describe('PUT /posts/{id} route', () => {
         it('should return 200 status code', async () => {
-            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
-            jest.spyOn(prismaMock.prisma.post, 'update').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultPostSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'update').mockResolvedValue(resultPostSuccessful);
 
             const response = await request(server)
                 .put('/posts/1')
                 .send({userId:1,title:'Post 1',body:'Body 1'})
                 .set('Authorization', `Bearer asasdfasdfasdfsadfasdfasdf`);
             expect(response.status).toBe(HttpStatus.OK);
-            expect(response.body).toEqual(resultSuccessful);
+            expect(response.body).toEqual(resultPostSuccessful);
         })
 
         it('should return 400 status code', async () => {
@@ -277,15 +277,15 @@ describe('Post Route', () => {
 
     describe('PATCH /posts/{id} route', () => {
         it('should return 200 status code', async () => {
-            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
-            jest.spyOn(prismaMock.prisma.post, 'update').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultPostSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'update').mockResolvedValue(resultPostSuccessful);
 
             const response = await request(server)
                 .patch('/posts/1')
                 .send({userId:1,title:'Post 1',body:'Body 1'})
                 .set('Authorization', `Bearer asasdfasdfasdfsadfasdfasdf`);
             expect(response.status).toBe(HttpStatus.OK);
-            expect(response.body).toEqual(resultSuccessful);
+            expect(response.body).toEqual(resultPostSuccessful);
         })
 
         it('should return 400 status code', async () => {
@@ -325,8 +325,8 @@ describe('Post Route', () => {
 
     describe('DELETE /posts/{id} route', () => {
         it('should return 200 status code', async () => {
-            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultSuccessful);
-            jest.spyOn(prismaMock.prisma.post, 'delete').mockResolvedValue(resultSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findUnique').mockResolvedValue(resultPostSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'delete').mockResolvedValue(resultPostSuccessful);
 
             const response = await request(server)
                 .delete('/posts/1')

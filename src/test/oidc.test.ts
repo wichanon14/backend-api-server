@@ -44,7 +44,7 @@ jest.mock('../config/oidc.config', () => {
 jest.mock('jsonwebtoken', () => {
     return {
         decode: jest.fn().mockReturnValue({
-            payload:{ nonce: 'nonce' }
+            nonce: 'nonce' 
         })
     }
 })

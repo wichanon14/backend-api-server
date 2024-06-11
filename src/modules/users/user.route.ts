@@ -3,6 +3,7 @@ import {
     createUserHandler,
     getUserHandler,
     listUsersHandler,
+    listUserPostsHandler,
     updateUserHandler,
     updateUserAddressHandler,
     updateUserAddressGeoHandler,
@@ -16,7 +17,22 @@ import {
     getUserCompanyHandler
 } from "./users.handler";
 import { requestValidatorMiddleware } from "../../middleware/request.validator.middleware";
-import { createUserValidator, deleteUserValidator, getUserAddressGeoValidator, getUserAddressValidator, getUserCompanyValidator, getUserValidator, listUsersValidator, patchUserAddressValidator, patchUserCompanyValidator, patchUserValidator, updateUserAddressGeoValidator, updateUserAddressValidator, updateUserCompanyValidator, updateUserValidator } from "./user.validator";
+import { createUserValidator, 
+    deleteUserValidator, 
+    getUserAddressGeoValidator, 
+    getUserAddressValidator, 
+    getUserCompanyValidator, 
+    getUserValidator, 
+    listUserPostsValidator, 
+    listUsersValidator, 
+    patchUserAddressValidator, 
+    patchUserCompanyValidator, 
+    patchUserValidator, 
+    updateUserAddressGeoValidator, 
+    updateUserAddressValidator, 
+    updateUserCompanyValidator, 
+    updateUserValidator 
+} from "./user.validator";
 
 const route = Router();
 
@@ -205,6 +221,54 @@ route.get(
     getUserCompanyValidator,
     requestValidatorMiddleware,
     getUserCompanyHandler
+);
+
+/**
+ * @openapi
+ * /users/{id}/posts:
+ *  get:
+ *   security:
+ *      - bearerAuth: []
+ *   tags:
+ *      - Users
+ *   summary: API for getting posts of a user
+ *   description: API for getting posts of a user
+ *   headers:
+ *      Authorization:
+ *        schema:
+ *          type: string
+ *        description: Bearer token
+ *   parameters:
+ *      - in: path
+ *        name: id
+ *        type: number
+ *        required: true
+ *        description: The id of the user
+ *      - in: query
+ *        name: title
+ *        type: string
+ *        description: The title of the post
+ *      - in: query
+ *        name: body
+ *        type: string
+ *        description: The body of the post
+ *   responses:
+ *     200:
+ *       description: Returns a posts of a user.
+ *       content:
+ *        application/json:
+ *         schema:
+ *            $ref: '#/components/schemas/Posts'
+ *     400:
+ *       description: Bad Request
+ *     500:
+ *       description: Internal Server Error
+ */
+route.get(
+    '/users/:id/posts',
+    listUserPostsValidator,
+    requestValidatorMiddleware,
+    listUserPostsHandler
 );
 
 /**

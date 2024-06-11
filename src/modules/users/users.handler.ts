@@ -33,6 +33,44 @@ export const listUsersHandler = async (req: Request, res: Response, next: NextFu
     }
 }
 
+export const listUserPostsHandler = async (req: Request, res: Response, next: NextFunction) => {
+    // get the user id from the request
+    const userId = req.params.id;
+    const where = transformQueryToWhere(req.query, [
+        { key: 'title', type: 'text' },
+        { key: 'body', type: 'text' }
+    ])
+
+    try {
+
+        // check if the user exists
+        const isFoundUser = await prisma.user.findUnique({
+            where: {
+                id: parseInt(userId, 10)
+            }
+        });
+
+        if (!isFoundUser) {
+            return next(new AppError('User not found', HttpStatus.NOT_FOUND))
+        }
+
+        // query the posts from the database
+        const result = await prisma.post.findMany({
+            where: {
+                ...where,
+                userId: parseInt(userId, 10)
+            }
+        });
+
+        // return the list of posts
+        return res.send(result).end();
+    } catch (err) {
+        logger.error('listUserPosts error', err);
+        return next(new AppError('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR))
+    }
+
+}
+
 export const getUserHandler = async (req: Request, res: Response, next: NextFunction) => {
 
     // get the user id from the request

@@ -10,6 +10,12 @@ export const listUsersValidator = [
     query("companyId").optional().isInt().withMessage("Company ID must be an integer"),
 ]
 
+export const listUserPostsValidator = [
+    param("id").isInt().notEmpty().withMessage("ID must be an integer and not empty"),
+    query("title").optional().isString().withMessage("Title must be a string"),
+    query("body").optional().isString().withMessage("Body must be a string"),
+]
+
 export const getUserValidator = [
     param("id").isInt().notEmpty().withMessage("ID must be an integer and not empty"),
 ]

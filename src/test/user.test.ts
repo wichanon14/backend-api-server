@@ -3,6 +3,7 @@ import { server } from '../server';
 import request from 'supertest';
 import * as prismaMock from '../libs/prisma';
 import { User } from '@prisma/client';
+import { resultPostSuccessful } from './post.test';
 
 jest.mock('../libs/validateToken', () => {
     return {
@@ -35,6 +36,13 @@ jest.mock('@prisma/client', ()=>{
                 },
                 company:{
                     findUnique: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                post:{
+                    findMany: jest.fn(),
+                    findUnique: jest.fn(),
+                    create: jest.fn(),
                     update: jest.fn(),
                     delete: jest.fn()
                 },
@@ -459,6 +467,73 @@ describe('User Route', () => {
                 expect(response.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
                 expect(response.body).toEqual(resultInternalServerError);
             })
+        })
+    })
+
+    describe('GET /users/:id/posts', () => {
+        
+        describe('should return 200 status code', () => {
+            it('list of posts', async () => {
+                jest.spyOn(prismaMock.prisma.user, 'findUnique').mockResolvedValue(resultUserSuccessful);
+                jest.spyOn(prismaMock.prisma.post, 'findMany').mockResolvedValue([resultPostSuccessful]);
+                
+                const response = await request(server).get('/users/1/posts')
+                    .set('Authorization', 'Bearer token');
+                expect(response.status).toBe(HttpStatus.OK);
+                expect(response.body).toEqual([resultPostSuccessful]);
+            })
+
+            it('empty list of posts', async () => {
+                jest.spyOn(prismaMock.prisma.user, 'findUnique').mockResolvedValue(resultUserSuccessful);
+                jest.spyOn(prismaMock.prisma.post, 'findMany').mockResolvedValue([]);
+                
+                const response = await request(server).get('/users/1/posts')
+                    .set('Authorization', 'Bearer token');
+                expect(response.status).toBe(HttpStatus.OK);
+                expect(response.body).toEqual([]);
+            })
+        })
+        
+        it('should return 400 status code', async () => {
+            const response = await request(server).get('/users/abc/posts')
+                .set('Authorization','Bearer token');
+            expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+            expect(response.body).toEqual({
+                "errors": [
+                    {
+                        "location": "params",
+                        "msg": "Invalid value",
+                        "path": "id",
+                        "value": "abc",
+                        "type":"field"
+                    }
+                ]
+            });
+        })
+
+        it('should return 404 status code', async () => {
+            jest.spyOn(prismaMock.prisma.user, 'findUnique').mockResolvedValue(null);
+            
+            const response = await request(server).get('/users/2/posts')
+                .set('Authorization', 'Bearer token');
+            expect(response.status).toBe(HttpStatus.NOT_FOUND);
+            expect(response.body).toEqual({
+                "status": "error",
+                "msg": "User not found"
+            });
+        })
+
+        it('should return 500 status code', async () => {
+
+            jest.spyOn(prismaMock.prisma.user, 'findUnique').mockResolvedValue(resultUserSuccessful);
+            jest.spyOn(prismaMock.prisma.post, 'findMany').mockRejectedValue(
+                new AppError('Internal server error',HttpStatus.INTERNAL_SERVER_ERROR)
+            )
+
+            const response = await request(server).get('/users/1/posts')
+                .set('Authorization','Bearer token');
+            expect(response.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+            expect(response.body).toEqual(resultInternalServerError);
         })
     })
 

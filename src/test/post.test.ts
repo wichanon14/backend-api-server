@@ -1,9 +1,7 @@
 import { AppError, HttpStatus } from '../libs/error';
-import { Posts } from '../modules/posts/post.type';
 import { server } from '../server';
 import request from 'supertest';
 import { Post } from '@prisma/client';
-import { error } from 'console';
 
 jest.mock('../libs/validateToken', () => {
     return {
@@ -11,18 +9,21 @@ jest.mock('../libs/validateToken', () => {
     }
 });
 
-jest.mock('../libs/prisma', () => {
+jest.mock('@prisma/client', ()=>{
     return {
-        prisma: {
-            $connect: jest.fn().mockResolvedValue({}),
-            post: {
-                findMany: jest.fn(),
-                findUnique: jest.fn(),
-                create: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn()
+        PrismaClient: jest.fn().mockImplementation(()=>{
+            return {
+                $connect: jest.fn().mockResolvedValue({}),
+                post: {
+                    findMany: jest.fn(),
+                    findUnique: jest.fn(),
+                    create: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                $disconnect: jest.fn()
             }
-        }
+        })
     }
 })
 

@@ -1,5 +1,18 @@
 import request from 'supertest'
 import { server } from '../server'
+
+
+jest.mock('@prisma/client', ()=>{
+    return {
+        PrismaClient: jest.fn().mockImplementation(()=>{
+            return {
+                $connect: jest.fn().mockResolvedValue({}),
+                $disconnect: jest.fn()
+            }
+        })
+    }
+})
+
 describe('Health Route', () => {
     afterAll(() => {
         server.close()

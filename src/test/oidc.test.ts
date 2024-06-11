@@ -51,6 +51,25 @@ jest.mock('../libs/validateToken', () => {
     }
 })
 
+jest.mock('@prisma/client', ()=>{
+    return {
+        PrismaClient: jest.fn().mockImplementation(()=>{
+            return {
+                $connect: jest.fn().mockResolvedValue({}),
+                post: {
+                    findMany: jest.fn(),
+                    findUnique: jest.fn(),
+                    create: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                $disconnect: jest.fn()
+            }
+        })
+    }
+})
+
+
 describe('OIDC Route', () => {
     afterAll(() => {
         server.close()

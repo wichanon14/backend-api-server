@@ -8,36 +8,39 @@ jest.mock('../libs/validateToken', () => {
     }
 });
 
-jest.mock('../libs/prisma', () => {
+jest.mock('@prisma/client', ()=>{
     return {
-        prisma: {
-            $connect: jest.fn().mockResolvedValue({}),
-            $transaction: jest.fn().mockResolvedValue({}),
-            user: {
-                create: jest.fn(),
-                findUnique: jest.fn(),
-                findMany: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn()
-            },
-            address: {
-                findUnique: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn()
-            },
-            geo:{
-                findUnique: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn()
-            },
-            company:{
-                findUnique: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn()
+        PrismaClient: jest.fn().mockImplementation(()=>{
+            return {
+                $connect: jest.fn().mockResolvedValue({}),
+                $transaction: jest.fn().mockResolvedValue({}),
+                user: {
+                    create: jest.fn(),
+                    findUnique: jest.fn(),
+                    findMany: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                address: {
+                    findUnique: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                geo:{
+                    findUnique: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                company:{
+                    findUnique: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                $disconnect: jest.fn(),
             }
-        }
+        })
     }
-});
+})
 
 const resultUserSuccessful = {
     "id": 1,

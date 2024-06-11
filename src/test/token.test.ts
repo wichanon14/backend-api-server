@@ -32,6 +32,24 @@ jest.mock('jwks-rsa',()=>{
     })
 })
 
+jest.mock('@prisma/client', ()=>{
+    return {
+        PrismaClient: jest.fn().mockImplementation(()=>{
+            return {
+                $connect: jest.fn().mockResolvedValue({}),
+                post: {
+                    findMany: jest.fn(),
+                    findUnique: jest.fn().mockResolvedValue({}),
+                    create: jest.fn(),
+                    update: jest.fn(),
+                    delete: jest.fn()
+                },
+                $disconnect: jest.fn()
+            }
+        })
+    }
+})
+
 describe('Token validation middleware', () => {
     
     afterAll(() => {

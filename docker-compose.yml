@@ -21,7 +21,7 @@ services:
       - db
     restart: always
     working_dir: /app
-    command: npm run dev
+    command: npm start
     volumes:
       - .:/app
     environment:

@@ -1,0 +1,22 @@
+# This Dockerfile is used to build an image containing an environment for running the backend of the application
+FROM node:21-alpine
+
+# set working directory in the container
+WORKDIR /app
+
+# copy the dependencies file to the working directory. Exclude file in .dockerignore
+COPY package*.json .
+
+# install dependencies
+RUN npm install
+
+COPY . .
+
+# generate prisma client
+RUN npx prisma generate
+
+# build app
+RUN npm run build
+
+# expose port 3000
+EXPOSE 3000

@@ -2,7 +2,7 @@
 FROM node:21-alpine
 
 # for prisma
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl curl
 
 # Ensure npm is installed
 RUN npm install -g npm

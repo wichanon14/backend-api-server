@@ -1,6 +1,9 @@
 # This Dockerfile is used to build an image containing an environment for running the backend of the application
 FROM node:21-alpine
 
+# for prisma
+RUN apk add --no-cache openssl1.1-compat
+
 # set working directory in the container
 WORKDIR /app
 

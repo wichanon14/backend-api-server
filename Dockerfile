@@ -2,7 +2,7 @@
 FROM node:21-alpine
 
 # for prisma
-RUN apk add --no-cache openssl1.1-compat
+RUN apk add --no-cache openssl
 
 # set working directory in the container
 WORKDIR /app

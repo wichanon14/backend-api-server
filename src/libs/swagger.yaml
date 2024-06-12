@@ -1,0 +1,1153 @@
+openapi: 3.0.0
+info:
+  title: User Post management API
+  version: 1.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: number
+          default: 1
+        title:
+          type: string
+          default: title
+        body:
+          type: string
+          default: body
+        userId:
+          type: number
+          default: 1
+        createdAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+        updatedAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+    Posts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Post'
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          default: 1
+        name:
+          type: string
+          default: Leanne Graham
+        username:
+          type: string
+          default: Bret
+        email:
+          type: string
+          default: null
+        addressId:
+          type: number
+          default: 1
+        phone:
+          type: string
+          default: 987654321
+        website:
+          type: string
+          default: hildegard.org
+        companyID:
+          type: number
+          default: 1
+        createdAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+        updatedAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    Address:
+      type: object
+      properties:
+        id:
+          type: number
+          default: 1
+        street:
+          type: string
+          default: Kulas Light
+        suite:
+          type: string
+          default: Apt. 556
+        city:
+          type: string
+          default: Gwenborough
+        zipcode:
+          type: string
+          default: 10900
+        geoId:
+          type: number
+          default: 1
+        createdAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+        updatedAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+    Geo:
+      type: object
+      properties:
+        id:
+          type: number
+          default: 1
+        lat:
+          type: string
+          default: -37.3159
+        lng:
+          type: string
+          default: 81.1496
+        createdAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+        updatedAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+    Company:
+      type: object
+      properties:
+        id:
+          type: number
+          default: 1
+        name:
+          type: string
+          default: Romaguera-Crona
+        catchPhrase:
+          type: string
+          default: Multi-layered client-server neural-net
+        bs:
+          type: string
+          default: harness real-time e-markets
+        createdAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+        updatedAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+    FullUser:
+      type: object
+      properties:
+        id:
+          type: number
+          default: 1
+        name:
+          type: string
+          default: Leanne Graham
+        username:
+          type: string
+          default: Bret
+        email:
+          type: string
+          default: test@test.com
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+          default: 987654321
+        website:
+          type: string
+          default: hildegard.org
+        company:
+          $ref: '#/components/schemas/Company'
+        createdAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+        updatedAt:
+          type: date
+          default: '2024-07-24T23:59:59.000Z'
+    CreatePost:
+      type: object
+      properties:
+        title:
+          type: string
+          default: title
+        body:
+          type: string
+          default: body
+        userId:
+          type: number
+          default: 1
+    UpdatePost:
+      type: object
+      properties:
+        title:
+          type: string
+          default: title
+        body:
+          type: string
+          default: body
+        userId:
+          type: number
+          default: 1
+    PatchPost:
+      type: object
+      properties:
+        title:
+          type: string
+          default: title
+        body:
+          type: string
+          default: body
+        userId:
+          type: number
+          default: 1
+    CreateUser:
+      type: object
+      properties:
+        name:
+          type: string
+          default: Leanne Graham
+        username:
+          type: string
+          default: Bret
+        email:
+          type: string
+          default: test@test.com
+        phone:
+          type: string
+          default: 987654321
+        website:
+          type: string
+          default: hildegard.org
+        address:
+          $ref: '#/components/schemas/UpdateUserAddress'
+        company:
+          $ref: '#/components/schemas/CreateUserAddressAndGeo'
+    UpdateUser:
+      type: object
+      properties:
+        name:
+          type: string
+          default: Leanne Graham
+        username:
+          type: string
+          default: Bret
+        email:
+          type: string
+          default: test@test.com
+        phone:
+          type: string
+          default: 987654321
+        website:
+          type: string
+          default: hildegard.org
+    UpdateUserAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          default: Kulas Light
+        suite:
+          type: string
+          default: Apt. 556
+        city:
+          type: string
+          default: Gwenborough
+        zipcode:
+          type: string
+          default: 10900
+    CreateUserAddressAndGeo:
+      type: object
+      properties:
+        street:
+          type: string
+          default: Kulas Light
+        suite:
+          type: string
+          default: Apt. 556
+        city:
+          type: string
+          default: Gwenborough
+        zipcode:
+          type: string
+          default: 10900
+        geo:
+          $ref: '#/components/schemas/UpdateUserAddressGeo'
+    UpdateUserAddressGeo:
+      type: object
+      properties:
+        lat:
+          type: string
+          default: -37.3159
+        lng:
+          type: string
+          default: 81.1496
+    UpdateUserCompany:
+      type: object
+      properties:
+        name:
+          type: string
+          default: Romaguera-Crona
+        catchPhrase:
+          type: string
+          default: Multi-layered client-server neural-net
+        bs:
+          type: string
+          default: harness real-time e-markets
+    PatchUser:
+      type: object
+      properties:
+        name:
+          type: string
+          default: Leanne Graham
+        username:
+          type: string
+          default: Bret
+        email:
+          type: string
+          default: test@test.com
+        phone:
+          type: string
+          default: 987654321
+        website:
+          type: string
+          default: hildegard.org
+    PatchUserAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          default: Kulas Light
+        suite:
+          type: string
+          default: Apt. 556
+        city:
+          type: string
+          default: Gwenborough
+        zipcode:
+          type: string
+          default: 10900
+    PatchUserCompany:
+      type: object
+      properties:
+        name:
+          type: string
+          default: Romaguera-Crona
+        catchPhrase:
+          type: string
+          default: Multi-layered client-server neural-net
+        bs:
+          type: string
+          default: harness real-time e-markets
+paths:
+  /auth:
+    get:
+      tags:
+        - OIDC
+      summary: OIDC Authentication
+      description: OIDC Authentication
+      responses:
+        '200':
+          description: Returns a site for authentication.
+        '400':
+          description: Bad Request
+  /callback:
+    post:
+      tags:
+        - OIDC
+      summary: OIDC Callback
+      description: OIDC Callback
+      responses:
+        '200':
+          description: Returns a mysterious string.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: object
+                    properties:
+                      id_token:
+                        type: string
+                        default: id_token
+                  msg:
+                    type: string
+                    default: Login success
+        '400':
+          description: Bad Request
+  /logout:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - OIDC
+      summary: OIDC Logout
+      description: OIDC Logout
+      headers:
+        Authorization:
+          description: Bearer token
+      responses:
+        '200':
+          description: Logout success
+        '400':
+          description: Bad Request
+  /posts:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: API for listing all posts
+      description: API for listing all posts
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: query
+          name: title
+          type: string
+          default: title
+          description: The title of the post
+        - in: query
+          name: body
+          type: string
+          default: body of post
+          description: The body of the post
+        - in: query
+          name: userId
+          type: number
+          default: 1
+          description: The user id of the post
+      responses:
+        '200':
+          description: Returns a mysterious string.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+        '400':
+          description: Bad Request
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: API for creating a post
+      description: API for creating a post
+      headers:
+        Authorization:
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePost'
+      responses:
+        '201':
+          description: Returns a mysterious string.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /posts/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: API for listing all posts
+      description: API for listing all posts
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          default: 1
+          required: true
+          description: The id of the post
+      responses:
+        '200':
+          description: Returns a mysterious string.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: API for updating a post
+      description: API for updating a post
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          default: 1
+          required: true
+          description: The id of the post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePost'
+      responses:
+        '200':
+          description: Returns updated post.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      tags:
+        - Posts
+      security:
+        - bearerAuth: []
+      summary: API for patching a post
+      description: API for patching a post
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          default: 1
+          required: true
+          description: The id of the post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPost'
+      responses:
+        '200':
+          description: Returns updated post.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: API for deleting a post
+      description: API for deleting a post
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          default: 1
+          required: true
+          description: The id of the post
+      responses:
+        '200':
+          description: Returns a successful message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    default: Post deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /users:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for listing all users
+      description: API for listing all users
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: query
+          name: name
+          type: string
+          description: The name of the user
+        - in: query
+          name: username
+          type: string
+          description: The username of the user
+        - in: query
+          name: email
+          type: string
+          description: The email of the user
+        - in: query
+          name: phone
+          type: string
+          description: The phone of the user
+        - in: query
+          name: website
+          type: string
+          description: The website of the user
+      responses:
+        '200':
+          description: Returns a mysterious string.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for creating a user
+      description: API for creating a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '201':
+          description: Returns a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /users/{id}/address:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for getting an address of a user
+      description: API for getting an address of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      responses:
+        '200':
+          description: Returns an address of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for updating an address of a user
+      description: API for updating an address of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserAddress'
+      responses:
+        '200':
+          description: Returns an address of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for patching an address of a user
+      description: API for patching an address of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchUserAddress'
+      responses:
+        '200':
+          description: Returns an address of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /users/{id}/address/{addressId}/geo:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for listing geo of an address of a user
+      description: API for listing geo of an address of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+        - in: path
+          name: addressId
+          type: number
+          required: true
+          description: The id of the address
+      responses:
+        '200':
+          description: Returns an address of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Geo'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for updating geo of an address of a user
+      description: API for updating geo of an address of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+        - in: path
+          name: addressId
+          type: number
+          required: true
+          description: The id of the address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserAddressGeo'
+      responses:
+        '200':
+          description: Returns an address of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Geo'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /users/{id}/company:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for getting a company of a user
+      description: API for getting a company of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      responses:
+        '200':
+          description: Returns a company of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for updating a company of a user
+      description: API for updating a company of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserCompany'
+      responses:
+        '200':
+          description: Returns a company of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for patching a company of a user
+      description: API for patching a company of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchUserCompany'
+      responses:
+        '200':
+          description: Returns a company of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /users/{id}/posts:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for getting posts of a user
+      description: API for getting posts of a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+        - in: query
+          name: title
+          type: string
+          description: The title of the post
+        - in: query
+          name: body
+          type: string
+          description: The body of the post
+      responses:
+        '200':
+          description: Returns a posts of a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /users/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for getting a user
+      description: API for getting a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      responses:
+        '200':
+          description: Returns a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullUser'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for updating a user
+      description: API for updating a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '200':
+          description: Returns a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for patching a user
+      description: API for patching a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchUser'
+      responses:
+        '200':
+          description: Returns a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: API for deleting a user
+      description: API for deleting a user
+      headers:
+        Authorization:
+          schema:
+            type: string
+          description: Bearer token
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: The id of the user
+      responses:
+        '200':
+          description: Returns a user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    default: User deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+tags: []

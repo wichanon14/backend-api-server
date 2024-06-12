@@ -15,7 +15,7 @@ import { logger } from './libs/pino';
 dotenv.config();
 
 const corsOptions = {
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000','http://104.248.148.22:3000'],
   credentials: true,
 };
 

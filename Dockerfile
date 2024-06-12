@@ -15,11 +15,11 @@ COPY package*.json .
 
 # install dependencies
 RUN npm install
-# install nodemon
+# ensure install nodemon
 RUN npm install -g nodemon
-# install typescript
+# ensure install typescript
 RUN npm install -g typescript
-# install for tsc 
+# ensure install for tsc 
 RUN npm install -g ts-node
 
 COPY . .

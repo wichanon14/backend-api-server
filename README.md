@@ -40,13 +40,22 @@ cd backend-api-server
 ```
 npm install
 ```
-3. Create a `.env` file in the root directory and add your environment variables.
+3. Create a `.env` file in the root directory and add your environment variables. The below is example of `.env` file:
+```
+PORT =
+DATABASE_URL =
+OIDC_ISSUER =
+OIDC_CLIENT_ID =
+OIDC_REDIRECT_URI = 
+OIDC_POST_LOGOUT_REDIRECT_URI =
+```
 4. Start the application using docker-compose:
 ```
 docker-compose up
 ```
+
 ##### Usage
-Once the application is running, you can access the API documentation at http://localhost:3000/api-docs (assuming port 3000 is used).
+Once the application is running, you can access the API documentation at http://localhost:3000/docs (assuming port 3000 is used).
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a pull request or open an issue.
